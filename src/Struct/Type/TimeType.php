@@ -21,10 +21,10 @@ class TimeType extends Type
      */
     public function __construct()
     {
-        parent::__construct(4, function (string $value): \DateTimeInterface {
+        parent::__construct(function ($resource): \DateTimeInterface {
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('UTC'));
-            $date->setTimestamp(Bin::fromUInt32($value));
+            $date->setTimestamp(Bin::fromUInt64(\fread($resource, 8)));
 
             return $date;
         });

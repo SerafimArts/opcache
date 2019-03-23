@@ -29,13 +29,33 @@ class Struct
     /**
      * Struct constructor.
      *
-     * @param \Closure $execute
+     * @param resource $descriptor
      */
-    public function __construct(\Closure $execute)
+    public function __construct($descriptor)
     {
-        foreach ($execute($this->read()) as $name => $value) {
-            $this->data[$name] = $value;
+        \assert(\get_resource_type($descriptor) === 'stream');
+
+        /**
+         * @var string $name
+         * @var TypeInterface|mixed $type
+         */
+        foreach ($this->read() as $name => $type) {
+            if ($type instanceof TypeInterface) {
+                $this->data[$name] = $type->decode($descriptor);
+                continue;
+            }
+
+            $this->data[$name] = $type;
         }
+    }
+
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
+    protected function get(string $name)
+    {
+        return $this->data[$name] ?? null;
     }
 
     /**
@@ -70,14 +90,14 @@ class Struct
      */
     public function __get(string $name)
     {
-        return $this->data[$name] ?? null;
+        return $this->get($name);
     }
 
     /**
      * @param string $name
-     * @param TypeInterface $value
+     * @param TypeInterface|Struct $value
      */
-    public function __set(string $name, TypeInterface $value)
+    public function __set(string $name, $value)
     {
         $this->types[$name] = $value;
     }

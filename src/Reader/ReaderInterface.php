@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Serafim\Opcache\Reader;
 
-use Serafim\Opcache\Zend\FileInterface;
+use Serafim\Opcache\FileInterface;
 
 /**
  * Interface ReaderInterface

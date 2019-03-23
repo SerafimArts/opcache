@@ -17,12 +17,14 @@ use Serafim\Opcache\Struct\Bin;
 class UInt32Type extends Type
 {
     /**
-     * CharType constructor.
+     * UInt32Type constructor.
+     *
+     * @param bool|null $littleEndian
      */
-    public function __construct()
+    public function __construct(?bool $littleEndian = false)
     {
-        parent::__construct(4, function (string $value): int {
-            return Bin::fromUInt32($value);
+        parent::__construct(function ($resource) use ($littleEndian): int {
+            return Bin::fromUInt32(\fread($resource, 4), $littleEndian);
         });
     }
 }

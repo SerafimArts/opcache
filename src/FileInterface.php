@@ -7,7 +7,9 @@
  */
 declare(strict_types=1);
 
-namespace Serafim\Opcache\Zend;
+namespace Serafim\Opcache;
+
+use Serafim\Opcache\Zend\Metainfo;
 
 /**
  * Interface FileInterface

@@ -9,24 +9,15 @@ declare(strict_types=1);
 
 namespace Serafim\Opcache\Zend;
 
-use Serafim\Opcache\Struct\FileStruct;
+use Serafim\Opcache\Struct\Struct;
+use Serafim\Opcache\Struct\Type\Int64Type;
 use Serafim\Opcache\Struct\Type\StringType;
 use Serafim\Opcache\Struct\Type\TimeType;
 use Serafim\Opcache\Struct\Type\UInt32Type;
+use Serafim\Opcache\Struct\Type\UInt64Type;
 
 /**
  * Representation of "_zend_file_cache_metainfo" structure
- * <code>
- *  typedef struct _zend_file_cache_metainfo {
- *      char         magic[8];
- *      char         system_id[32];
- *      size_t       mem_size;
- *      size_t       str_size;
- *      size_t       script_offset;
- *      accel_time_t timestamp;
- *      uint32_t     checksum;
- *  } zend_file_cache_metainfo;
- * </code>
  *
  * @property-read string $magic
  * @property-read string $systemId
@@ -36,9 +27,9 @@ use Serafim\Opcache\Struct\Type\UInt32Type;
  * @property-read \DateTimeInterface $timestamp
  * @property-read int $checksum
  *
- * @see https://github.com/php/php-src/blob/c32da66e129897f4f103ecc6319332f160ee52ea/ext/opcache/zend_file_cache.c#L160-L168
+ * @see https://github.com/php/php-src/blob/PHP-7.3.4/ext/opcache/zend_file_cache.c#L162-L170
  */
-class Metainfo extends FileStruct
+class Metainfo extends Struct
 {
     /**
      * Metainfo constructor.
@@ -47,13 +38,13 @@ class Metainfo extends FileStruct
      */
     public function __construct($descriptor)
     {
-        $this->magic = new StringType(8);
-        $this->systemId = new StringType(32);
-        $this->memSize = new UInt32Type();
-        $this->strSize = new UInt32Type();
-        $this->scriptOffset = new UInt32Type();
+        $this->magic = StringType::fixed(8);
+        $this->systemId = StringType::fixed(32);
+        $this->memSize = new UInt64Type();
+        $this->strSize = new UInt64Type();
+        $this->scriptOffset = new UInt64Type();
         $this->timestamp = new TimeType();
-        $this->checksum = new UInt32Type();
+        $this->checksum = new UInt64Type();
 
         parent::__construct($descriptor);
     }

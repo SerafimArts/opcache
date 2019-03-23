@@ -12,17 +12,17 @@ namespace Serafim\Opcache\Struct\Type;
 use Serafim\Opcache\Struct\Bin;
 
 /**
- * Class CharType
+ * Class Int64Type
  */
-class CharType extends Type
+class Int64Type extends Type
 {
     /**
-     * CharType constructor.
+     * Int64Type constructor.
      */
     public function __construct()
     {
-        parent::__construct(function ($resource): string {
-            return Bin::fromChar(\fread($resource, 1));
+        parent::__construct(function ($resource): int {
+            return Bin::fromInt64(\fread($resource, 8));
         });
     }
 }

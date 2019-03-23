@@ -15,13 +15,8 @@ namespace Serafim\Opcache\Struct\Type;
 interface TypeInterface
 {
     /**
-     * @return int
-     */
-    public function getSize(): int;
-
-    /**
-     * @param mixed $value
+     * @param resource $stream
      * @return mixed
      */
-    public function decode($value);
+    public function decode($stream);
 }

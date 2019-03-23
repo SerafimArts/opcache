@@ -12,17 +12,19 @@ namespace Serafim\Opcache\Struct\Type;
 use Serafim\Opcache\Struct\Bin;
 
 /**
- * Class CharType
+ * Class UInt64Type
  */
-class CharType extends Type
+class UInt64Type extends Type
 {
     /**
-     * CharType constructor.
+     * UInt64Type constructor.
+     *
+     * @param bool|null $littleEndian
      */
-    public function __construct()
+    public function __construct(?bool $littleEndian = false)
     {
-        parent::__construct(function ($resource): string {
-            return Bin::fromChar(\fread($resource, 1));
+        parent::__construct(function ($resource) use ($littleEndian): int {
+            return Bin::fromUInt64(\fread($resource, 8), $littleEndian);
         });
     }
 }

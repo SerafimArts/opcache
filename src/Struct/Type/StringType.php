@@ -19,14 +19,23 @@ class StringType extends Type
     /**
      * StringType constructor.
      *
-     * @param int $size
+     * @param \Closure $decoder
      */
-    public function __construct(int $size)
+    public function __construct(\Closure $decoder)
     {
-        \assert($size > 0);
+        parent::__construct(function ($resource) use ($decoder): string {
+            return Bin::fromString($decoder($resource));
+        });
+    }
 
-        parent::__construct($size, function (string $value): string {
-            return Bin::fromString($value);
+    /**
+     * @param int $size
+     * @return StringType
+     */
+    public static function fixed(int $size): StringType
+    {
+        return new static(function ($resource) use ($size): string {
+            return \fread($resource, $size);
         });
     }
 }

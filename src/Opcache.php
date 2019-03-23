@@ -11,8 +11,6 @@ namespace Serafim\Opcache;
 
 use Serafim\Opcache\Reader\FilesystemReader;
 use Serafim\Opcache\Reader\ReaderInterface;
-use Serafim\Opcache\Zend\File;
-use Serafim\Opcache\Zend\FileInterface;
 
 /**
  * Class Opcache

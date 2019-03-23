@@ -7,9 +7,10 @@
  */
 declare(strict_types=1);
 
-namespace Serafim\Opcache\Zend;
+namespace Serafim\Opcache;
 
-use Symfony\Component\Finder\SplFileInfo;
+use Serafim\Opcache\Zend\Metainfo;
+use Serafim\Opcache\Zend\ZendString;
 
 /**
  * Class File
@@ -42,6 +43,7 @@ class File implements FileInterface
         $descriptor = \fopen($file->getRealPath(), 'rb');
 
         yield new Metainfo($descriptor);
+        //yield new ZendString($descriptor);
 
         \fclose($descriptor);
     }
