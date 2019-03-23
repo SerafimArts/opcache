@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Serafim\Opcache\Struct;
 
+use Serafim\Opcache\Struct\Type\TypeInterface;
+
 /**
  * Class FileStruct
  */
@@ -26,7 +28,7 @@ class FileStruct extends Struct
         parent::__construct(function ($iterator) use ($descriptor) {
             /**
              * @var string $name
-             * @var Type $type
+             * @var TypeInterface $type
              */
             foreach ($iterator as $name => $type) {
                 yield $name => $type->decode(\fread($descriptor, $type->getSize()));

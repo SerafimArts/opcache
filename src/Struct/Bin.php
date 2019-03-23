@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace Serafim\Opcache\Support;
+namespace Serafim\Opcache\Struct;
 
 use Serafim\Opcache\Exception\PackException;
 use Serafim\Opcache\Exception\UnpackException;
@@ -17,6 +17,50 @@ use Serafim\Opcache\Exception\UnpackException;
  */
 class Bin
 {
+    /**
+     * @param string $i
+     * @param bool $nullTerminated
+     * @return string
+     * @throws PackException
+     */
+    public static function toString(string $i, bool $nullTerminated = false): string
+    {
+        return self::pack($nullTerminated ? 'a*' : 'A*', $i);
+    }
+
+    /**
+     * @param string $i
+     * @param bool $nullTerminated
+     * @return string
+     * @throws UnpackException
+     */
+    public static function fromString(string $i, bool $nullTerminated = false): string
+    {
+        return self::unpack($nullTerminated ? 'a*' : 'A*', $i);
+    }
+
+    /**
+     * @param string $i
+     * @param bool $nullTerminated
+     * @return string
+     * @throws PackException
+     */
+    public static function toChar(string $i, bool $nullTerminated = false): string
+    {
+        return self::pack($nullTerminated ? 'a' : 'A', $i);
+    }
+
+    /**
+     * @param string $i
+     * @param bool $nullTerminated
+     * @return string
+     * @throws UnpackException
+     */
+    public static function fromChar(string $i, bool $nullTerminated = false): string
+    {
+        return self::unpack($nullTerminated ? 'a' : 'A', $i);
+    }
+
     /**
      * @param int $i
      * @return string

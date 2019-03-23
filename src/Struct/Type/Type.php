@@ -7,12 +7,12 @@
  */
 declare(strict_types=1);
 
-namespace Serafim\Opcache\Struct;
+namespace Serafim\Opcache\Struct\Type;
 
 /**
  * Class Type
  */
-class Type
+class Type implements TypeInterface
 {
     /**
      * @var \Closure

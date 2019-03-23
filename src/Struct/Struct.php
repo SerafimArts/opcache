@@ -9,13 +9,18 @@ declare(strict_types=1);
 
 namespace Serafim\Opcache\Struct;
 
-use Serafim\Opcache\Support\Bin;
+use Serafim\Opcache\Struct\Type\TypeInterface;
 
 /**
  * Class Struct
  */
 class Struct
 {
+    /**
+     * @var array|TypeInterface[]
+     */
+    private $types = [];
+
     /**
      * @var array|mixed
      */
@@ -34,10 +39,12 @@ class Struct
     }
 
     /**
-     * @return iterable|Type[]
+     * @return iterable|TypeInterface[]
      */
     public function read(): iterable
     {
+        yield from $this->types;
+
         $reflection = new \ReflectionObject($this);
         $properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
 
@@ -46,43 +53,6 @@ class Struct
 
             yield $property->getName() => $property->getValue($this);
         }
-    }
-
-    /**
-     * @param int $size
-     * @return Type
-     */
-    public static function char(int $size = 1): Type
-    {
-        \assert($size > 0);
-
-        return new Type($size, function ($value) {
-            return \trim($value);
-        });
-    }
-
-    /**
-     * @return Type
-     */
-    public static function uInt32(): Type
-    {
-        return new Type(4, function ($value): int {
-            return Bin::fromUInt32($value);
-        });
-    }
-
-    /**
-     * @return Type
-     */
-    public static function timeT(): Type
-    {
-        return new Type(4, function ($value): \DateTimeInterface {
-            $date = new \DateTime();
-            $date->setTimezone(new \DateTimeZone('UTC'));
-            $date->setTimestamp(Bin::fromUInt32($value));
-
-            return $date;
-        });
     }
 
     /**
@@ -101,6 +71,15 @@ class Struct
     public function __get(string $name)
     {
         return $this->data[$name] ?? null;
+    }
+
+    /**
+     * @param string $name
+     * @param TypeInterface $value
+     */
+    public function __set(string $name, TypeInterface $value)
+    {
+        $this->types[$name] = $value;
     }
 
     /**

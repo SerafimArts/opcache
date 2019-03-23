@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace Serafim\Opcache\Zend;
 
 use Serafim\Opcache\Struct\FileStruct;
-use Serafim\Opcache\Struct\Struct;
-use Serafim\Opcache\Struct\Type;
-use Serafim\Opcache\Support\Bin;
+use Serafim\Opcache\Struct\Type\StringType;
+use Serafim\Opcache\Struct\Type\TimeType;
+use Serafim\Opcache\Struct\Type\UInt32Type;
 
 /**
  * Representation of "_zend_file_cache_metainfo" structure
@@ -41,54 +41,19 @@ use Serafim\Opcache\Support\Bin;
 class Metainfo extends FileStruct
 {
     /**
-     * @var Type
-     */
-    protected $magic;
-
-    /**
-     * @var Type
-     */
-    protected $systemId;
-
-    /**
-     * @var Type
-     */
-    protected $memSize;
-
-    /**
-     * @var Type
-     */
-    protected $strSize;
-
-    /**
-     * @var Type
-     */
-    protected $scriptOffset;
-
-    /**
-     * @var Type
-     */
-    protected $timestamp;
-
-    /**
-     * @var Type
-     */
-    protected $checksum;
-
-    /**
      * Metainfo constructor.
      *
      * @param resource $descriptor
      */
     public function __construct($descriptor)
     {
-        $this->magic = self::char(8);
-        $this->systemId = self::char(32);
-        $this->memSize = self::uInt32();
-        $this->strSize = self::uInt32();
-        $this->scriptOffset = self::uInt32();
-        $this->timestamp = self::timeT();
-        $this->checksum = self::uInt32();
+        $this->magic = new StringType(8);
+        $this->systemId = new StringType(32);
+        $this->memSize = new UInt32Type();
+        $this->strSize = new UInt32Type();
+        $this->scriptOffset = new UInt32Type();
+        $this->timestamp = new TimeType();
+        $this->checksum = new UInt32Type();
 
         parent::__construct($descriptor);
     }
